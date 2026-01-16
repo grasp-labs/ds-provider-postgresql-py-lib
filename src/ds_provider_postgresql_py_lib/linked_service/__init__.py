@@ -9,7 +9,7 @@ This module implements a linked service for PostgreSQL databases.
 Example:
     >>> linked_service = PostgreSQLLinkedService(
     ...     typed_properties=PostgreSQLLinkedServiceTypedProperties(
-    ...         host="https://api.example.com",
+    ...         uri="postgresql://user:password@localhost:5432/mydb",
     ...     ),
     ... )
     >>> linked_service.connect()
