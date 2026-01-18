@@ -24,12 +24,12 @@ from sqlalchemy import Column, Integer, MetaData, String, Table
 
 from ds_provider_postgresql_py_lib.dataset.postgresql import (
     PostgreSQLDataset,
-    PostgreSQLDatasetTypedProperties,
-    ReadTypedProperties,
+    PostgreSQLDatasetSettings,
+    ReadSettings,
 )
 from ds_provider_postgresql_py_lib.linked_service.postgresql import (
     PostgreSQLLinkedService,
-    PostgreSQLLinkedServiceTypedProperties,
+    PostgreSQLLinkedServiceSettings,
 )
 from tests.mocks import create_mock_linked_service, create_test_dataframe
 
@@ -38,13 +38,11 @@ def test_read_raises_when_connection_is_missing() -> None:
     """
     It raises ConnectionError when read is called without an initialized connection.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
-    linked_service = PostgreSQLLinkedService(
-        typed_properties=PostgreSQLLinkedServiceTypedProperties(uri="postgresql://user:pass@localhost/db")
-    )
+    props = PostgreSQLDatasetSettings(table="test_table")
+    linked_service = PostgreSQLLinkedService(settings=PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db"))
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     with pytest.raises(ConnectionError):
         dataset.read()
@@ -67,15 +65,15 @@ def test_read_reads_all_columns_when_none_specified(mock_table: MagicMock, mock_
     mock_table.return_value = real_table
     mock_read_sql.return_value = [create_test_dataframe()]
 
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dataset.read()
-    assert dataset.content is not None
-    assert isinstance(dataset.content, pd.DataFrame)
+    assert dataset.output is not None
+    assert isinstance(dataset.output, pd.DataFrame)
     assert dataset.next is False
 
 
@@ -96,17 +94,17 @@ def test_read_applies_column_selection(mock_table: MagicMock, mock_read_sql: Mag
     mock_table.return_value = real_table
     mock_read_sql.return_value = [create_test_dataframe()]
 
-    props = PostgreSQLDatasetTypedProperties(
+    props = PostgreSQLDatasetSettings(
         table="test_table",
-        read=ReadTypedProperties(columns=["id", "name"]),
+        read=ReadSettings(columns=["id", "name"]),
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dataset.read()
-    assert dataset.content is not None
+    assert dataset.output is not None
 
 
 @patch("pandas.read_sql")
@@ -126,17 +124,17 @@ def test_read_applies_filters(mock_table: MagicMock, mock_read_sql: MagicMock) -
     mock_table.return_value = real_table
     mock_read_sql.return_value = [create_test_dataframe()]
 
-    props = PostgreSQLDatasetTypedProperties(
+    props = PostgreSQLDatasetSettings(
         table="test_table",
-        read=ReadTypedProperties(filters={"status": "active"}),
+        read=ReadSettings(filters={"status": "active"}),
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dataset.read()
-    assert dataset.content is not None
+    assert dataset.output is not None
 
 
 @patch("pandas.read_sql")
@@ -155,17 +153,17 @@ def test_read_applies_order_by(mock_table: MagicMock, mock_read_sql: MagicMock) 
     mock_table.return_value = real_table
     mock_read_sql.return_value = [create_test_dataframe()]
 
-    props = PostgreSQLDatasetTypedProperties(
+    props = PostgreSQLDatasetSettings(
         table="test_table",
-        read=ReadTypedProperties(order_by=["id"]),
+        read=ReadSettings(order_by=["id"]),
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dataset.read()
-    assert dataset.content is not None
+    assert dataset.output is not None
 
 
 @patch("pandas.read_sql")
@@ -184,17 +182,17 @@ def test_read_applies_limit(mock_table: MagicMock, mock_read_sql: MagicMock) -> 
     mock_table.return_value = real_table
     mock_read_sql.return_value = [create_test_dataframe()]
 
-    props = PostgreSQLDatasetTypedProperties(
+    props = PostgreSQLDatasetSettings(
         table="test_table",
-        read=ReadTypedProperties(limit=10),
+        read=ReadSettings(limit=10),
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dataset.read()
-    assert dataset.content is not None
+    assert dataset.output is not None
 
 
 @patch("pandas.read_sql")
@@ -214,11 +212,11 @@ def test_read_sets_schema_from_content(mock_table: MagicMock, mock_read_sql: Mag
     df = create_test_dataframe()
     mock_read_sql.return_value = [df]
 
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dataset.read()
     assert dataset.schema is not None
@@ -241,11 +239,11 @@ def test_read_wraps_exception_into_read_error(mock_table: MagicMock, mock_read_s
     mock_table.return_value = real_table
     mock_read_sql.side_effect = Exception("Database error")
 
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     with pytest.raises(ReadError) as exc_info:
         dataset.read()

@@ -19,7 +19,7 @@ from sqlalchemy.pool import Pool
 
 from ds_provider_postgresql_py_lib.linked_service.postgresql import (
     PostgreSQLLinkedService,
-    PostgreSQLLinkedServiceTypedProperties,
+    PostgreSQLLinkedServiceSettings,
 )
 
 
@@ -40,8 +40,8 @@ def test_test_connection_succeeds_when_connected(mock_create_engine: MagicMock) 
     mock_engine.begin = MagicMock(return_value=mock_context)
     mock_create_engine.return_value = mock_engine
 
-    props = PostgreSQLLinkedServiceTypedProperties(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(typed_properties=props)
+    props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
+    linked_service = PostgreSQLLinkedService(settings=props)
     linked_service.connect()
 
     success, message = linked_service.test_connection()
@@ -66,8 +66,8 @@ def test_test_connection_auto_connects_if_not_connected(mock_create_engine: Magi
     mock_engine.begin = MagicMock(return_value=mock_context)
     mock_create_engine.return_value = mock_engine
 
-    props = PostgreSQLLinkedServiceTypedProperties(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(typed_properties=props)
+    props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
+    linked_service = PostgreSQLLinkedService(settings=props)
 
     success, message = linked_service.test_connection()
     assert success is True
@@ -89,8 +89,8 @@ def test_test_connection_fails_on_exception(mock_create_engine: MagicMock) -> No
     mock_engine.begin = MagicMock(return_value=mock_context)
     mock_create_engine.return_value = mock_engine
 
-    props = PostgreSQLLinkedServiceTypedProperties(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(typed_properties=props)
+    props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
+    linked_service = PostgreSQLLinkedService(settings=props)
     linked_service.connect()
 
     success, message = linked_service.test_connection()
@@ -105,8 +105,8 @@ def test_test_connection_returns_false_when_engine_creation_fails(mock_create_en
     """
     mock_create_engine.return_value = None
 
-    props = PostgreSQLLinkedServiceTypedProperties(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(typed_properties=props)
+    props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
+    linked_service = PostgreSQLLinkedService(settings=props)
 
     success, message = linked_service.test_connection()
     assert success is False

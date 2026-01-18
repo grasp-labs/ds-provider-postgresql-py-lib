@@ -21,12 +21,12 @@ if TYPE_CHECKING:
 
 from ds_provider_postgresql_py_lib.dataset.postgresql import (
     PostgreSQLDataset,
-    PostgreSQLDatasetTypedProperties,
-    ReadTypedProperties,
+    PostgreSQLDatasetSettings,
+    ReadSettings,
 )
 from ds_provider_postgresql_py_lib.linked_service.postgresql import (
     PostgreSQLLinkedService,
-    PostgreSQLLinkedServiceTypedProperties,
+    PostgreSQLLinkedServiceSettings,
 )
 
 
@@ -80,8 +80,8 @@ def create_mock_linked_service(uri: str = "postgresql://user:pass@localhost/db")
     Returns:
         PostgreSQLLinkedService: A linked service instance with mocked engine.
     """
-    props = PostgreSQLLinkedServiceTypedProperties(uri=uri)
-    linked_service = PostgreSQLLinkedService(typed_properties=props)
+    props = PostgreSQLLinkedServiceSettings(uri=uri)
+    linked_service = PostgreSQLLinkedService(settings=props)
     linked_service._engine = cast("Engine", MockEngine())
     return linked_service
 
@@ -90,7 +90,7 @@ def create_mock_dataset(
     table: str = "test_table",
     schema: str = "public",
     linked_service: PostgreSQLLinkedService | None = None,
-    read_props: ReadTypedProperties | None = None,
+    read_props: ReadSettings | None = None,
 ) -> PostgreSQLDataset:
     """
     Create a mock PostgreSQLDataset for testing.
@@ -99,7 +99,7 @@ def create_mock_dataset(
         table: The table name.
         schema: The schema name.
         linked_service: Optional linked service. If None, creates a mock one.
-        read_props: Optional read properties.
+        read_props: Optional read settings.
 
     Returns:
         PostgreSQLDataset: A dataset instance ready for testing.
@@ -107,14 +107,14 @@ def create_mock_dataset(
     if linked_service is None:
         linked_service = create_mock_linked_service()
 
-    props = PostgreSQLDatasetTypedProperties(
+    props = PostgreSQLDatasetSettings(
         table=table,
         schema=schema,
         read=read_props,
     )
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     return dataset
 

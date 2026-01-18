@@ -23,8 +23,8 @@ from sqlalchemy import BigInteger, Boolean, Column, DateTime, Float, Integer, Me
 
 from ds_provider_postgresql_py_lib.dataset.postgresql import (
     PostgreSQLDataset,
-    PostgreSQLDatasetTypedProperties,
-    ReadTypedProperties,
+    PostgreSQLDatasetSettings,
+    ReadSettings,
 )
 from tests.mocks import create_mock_linked_service, create_test_dataframe
 
@@ -33,11 +33,11 @@ def test_set_schema_populates_schema_from_dataframe() -> None:
     """
     It derives a string schema mapping from the dataframe columns/dtypes.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     df = create_test_dataframe()
     dataset._set_schema(df)
@@ -54,11 +54,11 @@ def test_get_table_returns_table_with_correct_schema_and_name(mock_table: MagicM
     mock_table_instance = MagicMock()
     mock_table.return_value = mock_table_instance
 
-    props = PostgreSQLDatasetTypedProperties(table="test_table", schema="custom_schema")
+    props = PostgreSQLDatasetSettings(table="test_table", schema="custom_schema")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     table = dataset._get_table()
     assert table == mock_table_instance
@@ -69,11 +69,11 @@ def test_pandas_dtype_to_sqlalchemy_integer_small() -> None:
     """
     It converts small integer dtypes to Integer.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dtypes = pd.Series({"col": pd.Int16Dtype()})
     result = dataset._pandas_dtype_to_sqlalchemy(dtypes)
@@ -84,11 +84,11 @@ def test_pandas_dtype_to_sqlalchemy_integer_large() -> None:
     """
     It converts large integer dtypes to BigInteger.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dtypes = pd.Series({"col": pd.Int64Dtype()})
     result = dataset._pandas_dtype_to_sqlalchemy(dtypes)
@@ -99,11 +99,11 @@ def test_pandas_dtype_to_sqlalchemy_float() -> None:
     """
     It converts float dtypes to Float.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dtypes = pd.Series({"col": pd.Float64Dtype()})
     result = dataset._pandas_dtype_to_sqlalchemy(dtypes)
@@ -114,11 +114,11 @@ def test_pandas_dtype_to_sqlalchemy_boolean() -> None:
     """
     It converts boolean dtypes to Boolean.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dtypes = pd.Series({"col": pd.BooleanDtype()})
     result = dataset._pandas_dtype_to_sqlalchemy(dtypes)
@@ -129,11 +129,11 @@ def test_pandas_dtype_to_sqlalchemy_datetime() -> None:
     """
     It converts datetime dtypes to DateTime.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dtypes = pd.Series({"col": pd.DatetimeTZDtype(tz="UTC")})
     result = dataset._pandas_dtype_to_sqlalchemy(dtypes)
@@ -144,11 +144,11 @@ def test_pandas_dtype_to_sqlalchemy_string() -> None:
     """
     It converts string dtypes to String.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dtypes = pd.Series({"col": pd.StringDtype()})
     result = dataset._pandas_dtype_to_sqlalchemy(dtypes)
@@ -159,11 +159,11 @@ def test_pandas_dtype_to_sqlalchemy_unknown_defaults_to_string() -> None:
     """
     It defaults unknown dtypes to String.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     dtypes = pd.Series({"col": object})
     result = dataset._pandas_dtype_to_sqlalchemy(dtypes)
@@ -174,11 +174,11 @@ def test_validate_column_raises_when_column_missing() -> None:
     """
     It raises ValueError when column doesn't exist in table.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     mock_table = MagicMock()
     mock_table.c = MagicMock()
@@ -194,11 +194,11 @@ def test_validate_column_passes_when_column_exists() -> None:
     """
     It does not raise when column exists in table.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     mock_table = MagicMock()
     mock_table.c = MagicMock()
@@ -211,11 +211,11 @@ def test_build_select_columns_returns_all_columns_when_none_specified() -> None:
     """
     It returns select(table) when no columns are specified.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     metadata = MetaData()
     real_table = Table(
@@ -232,11 +232,11 @@ def test_build_select_columns_returns_specified_columns() -> None:
     """
     It returns select with specified columns when provided.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     metadata = MetaData()
     real_table = Table(
@@ -245,7 +245,7 @@ def test_build_select_columns_returns_specified_columns() -> None:
         Column("id", Integer),
         Column("name", String),
     )
-    read_props = ReadTypedProperties(columns=["id", "name"])
+    read_props = ReadSettings(columns=["id", "name"])
     stmt = dataset._build_select_columns(real_table, read_props)
     assert stmt is not None
 
@@ -254,11 +254,11 @@ def test_build_filters_returns_unchanged_stmt_when_no_filters() -> None:
     """
     It returns unchanged statement when no filters are provided.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     mock_table = MagicMock()
     mock_stmt = MagicMock()
@@ -270,11 +270,11 @@ def test_build_filters_applies_filters_when_provided() -> None:
     """
     It applies filters to the statement when provided.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     mock_table = MagicMock()
     mock_col = MagicMock()
@@ -282,7 +282,7 @@ def test_build_filters_applies_filters_when_provided() -> None:
     mock_table.c.__contains__ = lambda self, key: key in ["status"]
     mock_table.c.__getitem__ = lambda self, key: mock_col
     mock_stmt = MagicMock()
-    read_props = ReadTypedProperties(filters={"status": "active"})
+    read_props = ReadSettings(filters={"status": "active"})
     result = dataset._build_filters(mock_stmt, mock_table, read_props)
     assert result is not None
 
@@ -291,11 +291,11 @@ def test_build_order_by_returns_unchanged_stmt_when_no_order_by() -> None:
     """
     It returns unchanged statement when no order_by is provided.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     mock_table = MagicMock()
     mock_stmt = MagicMock()
@@ -307,11 +307,11 @@ def test_build_order_by_applies_ascending_order() -> None:
     """
     It applies ascending order when column name is provided.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     metadata = MetaData()
     real_table = Table(
@@ -320,7 +320,7 @@ def test_build_order_by_applies_ascending_order() -> None:
         Column("id", Integer),
     )
     mock_stmt = select(real_table)
-    read_props = ReadTypedProperties(order_by=["id"])
+    read_props = ReadSettings(order_by=["id"])
     result = dataset._build_order_by(mock_stmt, real_table, read_props)
     assert result is not None
 
@@ -329,11 +329,11 @@ def test_build_order_by_applies_descending_order() -> None:
     """
     It applies descending order when tuple with 'desc' is provided.
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     metadata = MetaData()
     real_table = Table(
@@ -342,7 +342,7 @@ def test_build_order_by_applies_descending_order() -> None:
         Column("id", Integer),
     )
     mock_stmt = select(real_table)
-    read_props = ReadTypedProperties(order_by=[("id", "desc")])
+    read_props = ReadSettings(order_by=[("id", "desc")])
     result = dataset._build_order_by(mock_stmt, real_table, read_props)
     assert result is not None
 
@@ -351,11 +351,11 @@ def test_build_order_by_handles_mixed_order_specs() -> None:
     """
     It handles mixed order specifications (tuples and strings).
     """
-    props = PostgreSQLDatasetTypedProperties(table="test_table")
+    props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
         linked_service=cast("Any", linked_service),
-        typed_properties=props,
+        settings=props,
     )
     metadata = MetaData()
     real_table = Table(
@@ -365,6 +365,6 @@ def test_build_order_by_handles_mixed_order_specs() -> None:
         Column("name", String),
     )
     mock_stmt = select(real_table)
-    read_props = ReadTypedProperties(order_by=[("id", "desc"), "name"])
+    read_props = ReadSettings(order_by=[("id", "desc"), "name"])
     result = dataset._build_order_by(mock_stmt, real_table, read_props)
     assert result is not None
