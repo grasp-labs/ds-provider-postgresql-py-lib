@@ -17,7 +17,7 @@ from ds_resource_plugin_py_lib.common.resource.errors import ResourceException
 
 from ds_provider_postgresql_py_lib.linked_service.postgresql import (
     PostgreSQLLinkedService,
-    PostgreSQLLinkedServiceTypedProperties,
+    PostgreSQLLinkedServiceSettings,
 )
 
 Logger()
@@ -27,7 +27,7 @@ logger = Logger.get_logger(__name__)
 def main() -> None:
     """Main function demonstrating PostgreSQL linked service connection."""
     linked_service = PostgreSQLLinkedService(
-        typed_properties=PostgreSQLLinkedServiceTypedProperties(
+        settings=PostgreSQLLinkedServiceSettings(
             uri="postgresql://user:password@localhost:5432/mydb",
             pool_size=5,
             max_overflow=10,
@@ -44,7 +44,7 @@ def main() -> None:
         success, message = linked_service.test_connection()
         if success:
             logger.info(f"Connection test successful: {message}")
-            logger.info(f"Connection pool size: {linked_service.typed_properties.pool_size}")
+            logger.info(f"Connection pool size: {linked_service.settings.pool_size}")
         else:
             raise ResourceException(message=message)
     except ResourceException as exc:

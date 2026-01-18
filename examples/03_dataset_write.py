@@ -6,7 +6,7 @@ Example 03: Write data to a PostgreSQL table using PostgreSQLDataset.
 
 This example demonstrates how to:
 - Create a PostgreSQL dataset
-- Configure write properties (mode: append, replace, delete_rows)
+- Configure write settings (mode: append, replace, delete_rows)
 - Write data to a table
 """
 
@@ -17,13 +17,13 @@ from ds_common_logger_py_lib import Logger
 from ds_resource_plugin_py_lib.common.resource.errors import ResourceException
 
 from ds_provider_postgresql_py_lib.dataset.postgresql import (
-    CreateTypedProperties,
+    CreateSettings,
+    PostgreSQLDatasetSettings,
     PostgreSQLDataset,
-    PostgreSQLDatasetTypedProperties,
 )
 from ds_provider_postgresql_py_lib.linked_service.postgresql import (
     PostgreSQLLinkedService,
-    PostgreSQLLinkedServiceTypedProperties,
+    PostgreSQLLinkedServiceSettings,
 )
 
 Logger()
@@ -50,14 +50,14 @@ def main() -> None:
 
     dataset = PostgreSQLDataset(
         linked_service=PostgreSQLLinkedService(
-            typed_properties=PostgreSQLLinkedServiceTypedProperties(
+            settings=PostgreSQLLinkedServiceSettings(
                 uri="postgresql://user:password@localhost:5432/mydb",
             ),
         ),
-        typed_properties=PostgreSQLDatasetTypedProperties(
+        settings=PostgreSQLDatasetSettings(
             schema="public",
             table="users",
-            create=CreateTypedProperties(
+            create=CreateSettings(
                 mode="replace",
                 index=False,
             ),
@@ -66,7 +66,7 @@ def main() -> None:
 
     try:
         logger.info("Writing data to PostgreSQL table...")
-        dataset.content = data
+        dataset.input = data
         dataset.linked_service.connect()
         dataset.create()
         logger.info("Data written successfully")

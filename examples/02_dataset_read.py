@@ -6,7 +6,7 @@ Example 02: Read data from a PostgreSQL table using PostgreSQLDataset.
 
 This example demonstrates how to:
 - Create a PostgreSQL dataset
-- Configure read properties (columns, filters, ordering, limit)
+- Configure read  (columns, filters, ordering, limit)
 - Read data from a table
 """
 
@@ -18,12 +18,12 @@ from ds_resource_plugin_py_lib.common.resource.errors import ResourceException
 
 from ds_provider_postgresql_py_lib.dataset.postgresql import (
     PostgreSQLDataset,
-    PostgreSQLDatasetTypedProperties,
-    ReadTypedProperties,
+    PostgreSQLDatasetSettings,
+    ReadSettings,
 )
 from ds_provider_postgresql_py_lib.linked_service.postgresql import (
     PostgreSQLLinkedService,
-    PostgreSQLLinkedServiceTypedProperties,
+    PostgreSQLLinkedServiceSettings,
 )
 
 Logger()
@@ -34,14 +34,14 @@ def main() -> None:
     """Main function demonstrating PostgreSQL dataset read operation."""
     dataset = PostgreSQLDataset(
         linked_service=PostgreSQLLinkedService(
-            typed_properties=PostgreSQLLinkedServiceTypedProperties(
+            settings=PostgreSQLLinkedServiceSettings(
                 uri="postgresql://user:password@localhost:5432/mydb",
             ),
         ),
-        typed_properties=PostgreSQLDatasetTypedProperties(
+        settings=PostgreSQLDatasetSettings(
             schema="public",
             table="users",
-            read=ReadTypedProperties(
+            read=ReadSettings(
                 columns=["id", "name", "email", "created_at"],
                 filters={"status": "active"},
                 order_by=[("created_at", "desc")],
@@ -52,11 +52,10 @@ def main() -> None:
 
     try:
         dataset.linked_service.connect()
-        logger.info(f"Reading data from table: {dataset.typed_properties.schema}.{dataset.typed_properties.table}")
+        logger.info(f"Reading data from table: {dataset.settings.schema}.{dataset.settings.table}")
         dataset.read()
-        df: pd.DataFrame = dataset.content
-        logger.info(f"Successfully read {len(df)} rows")
-        logger.info(f"Columns: {list(df.columns)}")
+        logger.info(f"Successfully read {len(dataset.output)} rows")
+        logger.info(f"Columns: {list(dataset.output.columns)}")
         logger.info(f"Schema: {dataset.schema}")
     except ResourceException as exc:
         logger.error(f"Failed to read data: {exc.__dict__}")
