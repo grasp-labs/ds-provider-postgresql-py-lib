@@ -6,7 +6,7 @@ Example 02: Read data from a PostgreSQL table using PostgreSQLDataset.
 
 This example demonstrates how to:
 - Create a PostgreSQL dataset
-- Configure read  (columns, filters, ordering, limit)
+- Configure read (columns, filters, ordering, limit)
 - Read data from a table
 """
 
