@@ -17,5 +17,16 @@ Example
 
 from importlib.metadata import version
 
-__version__ = version("ds-provider-postgresql-py-lib")
-__all__ = ["__version__"]
+from .dataset import PostgreSQLDataset, PostgreSQLDatasetSettings
+from .linked_service import PostgreSQLLinkedService, PostgreSQLLinkedServiceSettings
+
+PACKAGE_NAME = "ds-provider-postgresql-py-lib"
+__version__ = version(PACKAGE_NAME)
+
+__all__ = [
+    "PostgreSQLDataset",
+    "PostgreSQLDatasetSettings",
+    "PostgreSQLLinkedService",
+    "PostgreSQLLinkedServiceSettings",
+    "__version__",
+]
