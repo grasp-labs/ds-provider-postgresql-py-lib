@@ -6,7 +6,7 @@ Example 03: Write data to a PostgreSQL table using PostgreSQLDataset.
 
 This example demonstrates how to:
 - Create a PostgreSQL dataset
-- Configure write settings (mode: append, replace, delete_rows)
+- Configure write settings (mode: append, replace, fail)
 - Write data to a table
 """
 

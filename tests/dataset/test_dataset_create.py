@@ -5,7 +5,7 @@
 PostgreSQLDataset create() method tests.
 
 Covers:
-- create() method with various modes (append, replace, delete_rows).
+- create() method with various modes (append, replace, fail).
 - Error handling (connection errors, empty content).
 - Schema and index configuration.
 - Exception wrapping into WriteError.
@@ -127,13 +127,13 @@ def test_create_writes_data_with_replace_mode(mock_to_sql: MagicMock) -> None:
 
 
 @patch("pandas.DataFrame.to_sql")
-def test_create_writes_data_with_delete_rows_mode(mock_to_sql: MagicMock) -> None:
+def test_create_writes_data_with_fail_mode(mock_to_sql: MagicMock) -> None:
     """
-    It writes data using delete_rows mode.
+    It writes data using fail mode.
     """
     props = PostgreSQLDatasetSettings(
         table="test_table",
-        create=CreateSettings(mode="delete_rows"),
+        create=CreateSettings(mode="fail"),
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
@@ -144,7 +144,7 @@ def test_create_writes_data_with_delete_rows_mode(mock_to_sql: MagicMock) -> Non
     dataset.input = df
     dataset.create()
     call_kwargs = mock_to_sql.call_args[1]
-    assert call_kwargs["if_exists"] == "delete_rows"
+    assert call_kwargs["if_exists"] == "fail"
 
 
 @patch("pandas.DataFrame.to_sql")
