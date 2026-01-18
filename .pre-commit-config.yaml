@@ -20,26 +20,26 @@ repos:
       - id: ruff
         name: ruff
         language: system
-        entry: uv run ruff check
+        entry: uv run --frozen ruff check
         args: [--config, .config/ruff.toml, --fix, --exit-non-zero-on-fix]
         files: ^(src|tests)/.*\.py$
       - id: ruff-format
         name: ruff-format
         language: system
-        entry: uv run ruff format
+        entry: uv run --frozen ruff format
         args: [--config, .config/ruff.toml]
         files: ^(src|tests)/.*\.py$
       - id: mypy
         name: mypy
         language: system
-        entry: uv run mypy
+        entry: uv run --frozen mypy
         args: [--config-file, .config/mypy.ini, src]
         pass_filenames: false
         files: ^src/
       - id: bandit
         name: bandit
         language: system
-        entry: uv run bandit
+        entry: uv run --frozen bandit
         args: [-r, src]
         files: ^src/
         pass_filenames: false

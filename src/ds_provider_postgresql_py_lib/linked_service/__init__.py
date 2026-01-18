@@ -8,16 +8,16 @@ This module implements a linked service for PostgreSQL databases.
 
 Example:
     >>> linked_service = PostgreSQLLinkedService(
-    ...     typed_properties=PostgreSQLLinkedServiceTypedProperties(
+    ...     settings=PostgreSQLLinkedServiceSettings(
     ...         uri="postgresql://user:password@localhost:5432/mydb",
     ...     ),
     ... )
     >>> linked_service.connect()
 """
 
-from .postgresql import PostgreSQLLinkedService, PostgreSQLLinkedServiceTypedProperties
+from .postgresql import PostgreSQLLinkedService, PostgreSQLLinkedServiceSettings
 
 __all__ = [
     "PostgreSQLLinkedService",
-    "PostgreSQLLinkedServiceTypedProperties",
+    "PostgreSQLLinkedServiceSettings",
 ]

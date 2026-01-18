@@ -12,7 +12,7 @@ from typing import Generic, TypeVar
 
 from ds_resource_plugin_py_lib.common.resource.linked_service import (
     LinkedService,
-    LinkedServiceTypedProperties,
+    LinkedServiceSettings,
 )
 from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.pool import Pool
@@ -21,9 +21,9 @@ from ..enums import ResourceKind
 
 
 @dataclass(kw_only=True)
-class PostgreSQLLinkedServiceTypedProperties(LinkedServiceTypedProperties):
+class PostgreSQLLinkedServiceSettings(LinkedServiceSettings):
     """
-    The object containing the PostgreSQL linked service properties.
+    The object containing the PostgreSQL linked service settings.
     """
 
     uri: str
@@ -52,22 +52,22 @@ class PostgreSQLLinkedServiceTypedProperties(LinkedServiceTypedProperties):
     """The time in seconds after which a connection is recycled. Defaults to 3600."""
 
 
-PostgreSQLLinkedServiceTypedPropertiesType = TypeVar(
-    "PostgreSQLLinkedServiceTypedPropertiesType",
-    bound=PostgreSQLLinkedServiceTypedProperties,
+PostgreSQLLinkedServiceSettingsType = TypeVar(
+    "PostgreSQLLinkedServiceSettingsType",
+    bound=PostgreSQLLinkedServiceSettings,
 )
 
 
 @dataclass(kw_only=True)
 class PostgreSQLLinkedService(
-    LinkedService[PostgreSQLLinkedServiceTypedPropertiesType],
-    Generic[PostgreSQLLinkedServiceTypedPropertiesType],
+    LinkedService[PostgreSQLLinkedServiceSettingsType],
+    Generic[PostgreSQLLinkedServiceSettingsType],
 ):
     """
     The class is used to connect with PostgreSQL database.
     """
 
-    typed_properties: PostgreSQLLinkedServiceTypedPropertiesType
+    settings: PostgreSQLLinkedServiceSettingsType
     _engine: Engine | None = field(default=None, init=False, repr=False)
     """The SQLAlchemy engine instance with connection pool."""
 
@@ -115,11 +115,11 @@ class PostgreSQLLinkedService(
             return
 
         self._engine = create_engine(
-            url=self.typed_properties.uri,
-            pool_size=self.typed_properties.pool_size,
-            max_overflow=self.typed_properties.max_overflow,
-            pool_timeout=self.typed_properties.pool_timeout,
-            pool_recycle=self.typed_properties.pool_recycle,
+            url=self.settings.uri,
+            pool_size=self.settings.pool_size,
+            max_overflow=self.settings.max_overflow,
+            pool_timeout=self.settings.pool_timeout,
+            pool_recycle=self.settings.pool_recycle,
         )
         self.log.info("Connection pool created successfully.")
 
@@ -143,3 +143,12 @@ class PostgreSQLLinkedService(
             return True, "Connection successfully tested"
         except Exception as e:
             return False, f"Connection test failed: {e!s}"
+
+    def close(self) -> None:
+        """
+        Close the linked service.
+        """
+        if self._engine is not None:
+            self._engine.dispose()
+            self._engine = None
+        self.log.info("Linked service closed successfully.")

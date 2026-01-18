@@ -10,27 +10,27 @@ Example:
     >>> dataset = PostgreSQLDataset(
     ...     deserializer=PandasDeserializer(format=DatasetStorageFormatType.JSON),
     ...     serializer=PandasSerializer(format=DatasetStorageFormatType.JSON),
-    ...     typed_properties=PostgreSQLDatasetTypedProperties(
+    ...     settings=PostgreSQLDatasetSettings(
     ...         table="users",
-    ...         read=ReadTypedProperties(
+    ...         read=ReadSettings(
     ...             columns=["id", "name"],
     ...             filters={"status": "active"},
     ...             order_by=["created_at"],
     ...         ),
     ...     ),
     ...     linked_service=PostgreSQLLinkedService(
-    ...         typed_properties=PostgreSQLLinkedServiceTypedProperties(
+    ...         settings=PostgreSQLLinkedServiceSettings(
     ...             uri="postgresql://user:password@localhost:5432/mydb",
     ...         ),
     ...     ),
     ... )
     >>> dataset.read()
-    >>> data = dataset.content
+    >>> data = dataset.output
 """
 
-from .postgresql import PostgreSQLDataset, PostgreSQLDatasetTypedProperties
+from .postgresql import PostgreSQLDataset, PostgreSQLDatasetSettings
 
 __all__ = [
     "PostgreSQLDataset",
-    "PostgreSQLDatasetTypedProperties",
+    "PostgreSQLDatasetSettings",
 ]

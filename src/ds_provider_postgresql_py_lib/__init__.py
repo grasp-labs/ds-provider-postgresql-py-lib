@@ -17,16 +17,16 @@ Example
 
 from importlib.metadata import version
 
-from .dataset import PostgreSQLDataset, PostgreSQLDatasetTypedProperties
-from .linked_service import PostgreSQLLinkedService, PostgreSQLLinkedServiceTypedProperties
+from .dataset import PostgreSQLDataset, PostgreSQLDatasetSettings
+from .linked_service import PostgreSQLLinkedService, PostgreSQLLinkedServiceSettings
 
 PACKAGE_NAME = "ds-provider-postgresql-py-lib"
 __version__ = version(PACKAGE_NAME)
 
 __all__ = [
     "PostgreSQLDataset",
-    "PostgreSQLDatasetTypedProperties",
+    "PostgreSQLDatasetSettings",
     "PostgreSQLLinkedService",
-    "PostgreSQLLinkedServiceTypedProperties",
+    "PostgreSQLLinkedServiceSettings",
     "__version__",
 ]
