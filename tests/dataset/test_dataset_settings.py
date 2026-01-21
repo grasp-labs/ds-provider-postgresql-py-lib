@@ -5,7 +5,7 @@
 PostgreSQLDataset settings and initialization tests.
 
 Covers:
-- Dataset kind.
+- Dataset type.
 - Settings initialization and default values.
 - ReadSettings and CreateSettings initialization.
 """
@@ -21,13 +21,13 @@ from ds_provider_postgresql_py_lib.dataset.postgresql import (
     PostgreSQLDatasetSettings,
     ReadSettings,
 )
-from ds_provider_postgresql_py_lib.enums import ResourceKind
+from ds_provider_postgresql_py_lib.enums import ResourceType
 from tests.mocks import create_mock_linked_service
 
 
-def test_dataset_kind_is_dataset() -> None:
+def test_dataset_type_is_dataset() -> None:
     """
-    It exposes dataset kind.
+    It exposes dataset type.
     """
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
@@ -35,7 +35,7 @@ def test_dataset_kind_is_dataset() -> None:
         linked_service=cast("Any", linked_service),
         settings=props,
     )
-    assert dataset.kind == ResourceKind.DATASET
+    assert dataset.type == ResourceType.DATASET
 
 
 def test_settings_initialization() -> None:

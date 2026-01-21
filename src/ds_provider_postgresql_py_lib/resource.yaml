@@ -4,14 +4,14 @@ description: PostgreSQL provider for the DS Business Workflow
 
 linked_service:
   - name: PostgreSQL
-    kind: DS.RESOURCE.LINKED_SERVICE.POSTGRESQL
+    type: DS.RESOURCE.LINKED_SERVICE.POSTGRESQL
     version: 1.0.0
     description: PostgreSQL linked service
     class_name: ds_provider_postgresql_py_lib.linked_service.postgresql.PostgreSQLLinkedService
 
 dataset:
   - name: PostgreSQL
-    kind: DS.RESOURCE.DATASET.POSTGRESQL
+    type: DS.RESOURCE.DATASET.POSTGRESQL
     version: 1.0.0
     description: PostgreSQL dataset
     class_name: ds_provider_postgresql_py_lib.dataset.postgresql.PostgreSQLDataset

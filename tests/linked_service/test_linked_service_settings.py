@@ -5,27 +5,27 @@
 PostgreSQLLinkedService settings and initialization tests.
 
 Covers:
-- Linked service kind.
+- Linked service type.
 - Engine and pool access before connection.
 - Settings initialization and default values.
 """
 
 from __future__ import annotations
 
-from ds_provider_postgresql_py_lib.enums import ResourceKind
+from ds_provider_postgresql_py_lib.enums import ResourceType
 from ds_provider_postgresql_py_lib.linked_service.postgresql import (
     PostgreSQLLinkedService,
     PostgreSQLLinkedServiceSettings,
 )
 
 
-def test_linked_service_kind_is_linked_service() -> None:
+def test_linked_service_type_is_linked_service() -> None:
     """
-    It exposes linked service kind.
+    It exposes linked service type.
     """
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
     linked_service = PostgreSQLLinkedService(settings=props)
-    assert linked_service.kind == ResourceKind.LINKED_SERVICE
+    assert linked_service.type == ResourceType.LINKED_SERVICE
 
 
 def test_engine_is_none_before_connect() -> None:

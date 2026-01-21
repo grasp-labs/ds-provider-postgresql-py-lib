@@ -17,7 +17,7 @@ from ds_resource_plugin_py_lib.common.resource.linked_service import (
 from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.pool import Pool
 
-from ..enums import ResourceKind
+from ..enums import ResourceType
 
 
 @dataclass(kw_only=True)
@@ -72,13 +72,13 @@ class PostgreSQLLinkedService(
     """The SQLAlchemy engine instance with connection pool."""
 
     @property
-    def kind(self) -> ResourceKind:
+    def type(self) -> ResourceType:
         """
-        Get the kind of the linked service.
+        Get the type of the linked service.
         Returns:
-            ResourceKind
+            ResourceType
         """
-        return ResourceKind.LINKED_SERVICE
+        return ResourceType.LINKED_SERVICE
 
     @property
     def engine(self) -> Engine | None:
