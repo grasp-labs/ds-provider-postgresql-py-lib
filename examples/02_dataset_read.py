@@ -12,7 +12,6 @@ This example demonstrates how to:
 
 from __future__ import annotations
 
-import pandas as pd
 from ds_common_logger_py_lib import Logger
 from ds_resource_plugin_py_lib.common.resource.errors import ResourceException
 
