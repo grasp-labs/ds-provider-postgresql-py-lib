@@ -5,16 +5,16 @@
 Constants for PostgreSQL provider.
 
 Example:
-    >>> ResourceKind.LINKED_SERVICE
+    >>> ResourceType.LINKED_SERVICE
     'DS.RESOURCE.LINKED_SERVICE.POSTGRESQL'
-    >>> ResourceKind.DATASET
+    >>> ResourceType.DATASET
     'DS.RESOURCE.DATASET.POSTGRESQL'
 """
 
 from enum import StrEnum
 
 
-class ResourceKind(StrEnum):
+class ResourceType(StrEnum):
     """
     Constants for PostgreSQL provider.
     """

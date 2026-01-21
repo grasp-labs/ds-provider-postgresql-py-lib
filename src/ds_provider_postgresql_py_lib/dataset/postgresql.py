@@ -63,7 +63,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.sql import Select
 
-from ..enums import ResourceKind
+from ..enums import ResourceType
 from ..linked_service.postgresql import PostgreSQLLinkedService
 
 
@@ -195,8 +195,13 @@ class PostgreSQLDataset(
     )
 
     @property
-    def kind(self) -> ResourceKind:
-        return ResourceKind.DATASET
+    def type(self) -> ResourceType:
+        """
+        Get the type of the Dataset.
+        Returns:
+            ResourceType
+        """
+        return ResourceType.DATASET
 
     def create(self, **_kwargs: Any) -> None:
         """
