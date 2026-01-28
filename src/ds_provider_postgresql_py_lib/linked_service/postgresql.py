@@ -10,6 +10,7 @@ This module implements a linked service for PostgreSQL databases.
 from dataclasses import dataclass, field
 from typing import Generic, TypeVar
 
+from ds_common_logger_py_lib import Logger
 from ds_resource_plugin_py_lib.common.resource.linked_service import (
     LinkedService,
     LinkedServiceSettings,
@@ -18,6 +19,8 @@ from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.pool import Pool
 
 from ..enums import ResourceType
+
+logger = Logger.get_logger(__name__, package=True)
 
 
 @dataclass(kw_only=True)
@@ -121,7 +124,7 @@ class PostgreSQLLinkedService(
             pool_timeout=self.settings.pool_timeout,
             pool_recycle=self.settings.pool_recycle,
         )
-        self.log.info("Connection pool created successfully.")
+        logger.debug("Connection pool created successfully.")
 
     def test_connection(self) -> tuple[bool, str]:
         """
@@ -151,4 +154,4 @@ class PostgreSQLLinkedService(
         if self._engine is not None:
             self._engine.dispose()
             self._engine = None
-        self.log.info("Linked service closed successfully.")
+        logger.debug("Linked service closed successfully.")

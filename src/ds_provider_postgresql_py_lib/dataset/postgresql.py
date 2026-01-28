@@ -37,6 +37,7 @@ from dataclasses import dataclass, field
 from typing import Any, Generic, Literal, NoReturn, TypeVar, cast
 
 import pandas as pd
+from ds_common_logger_py_lib import Logger
 from ds_resource_plugin_py_lib.common.resource.dataset import (
     DatasetSettings,
     DatasetStorageFormatType,
@@ -65,6 +66,8 @@ from sqlalchemy.sql import Select
 
 from ..enums import ResourceType
 from ..linked_service.postgresql import PostgreSQLLinkedService
+
+logger = Logger.get_logger(__name__, package=True)
 
 
 @dataclass(kw_only=True)
@@ -278,7 +281,7 @@ class PostgreSQLDataset(
         if read_props and read_props.limit is not None:
             stmt = stmt.limit(read_props.limit)
 
-        self.log.debug(f"Executing query: {stmt}")
+        logger.debug(f"Executing query: {stmt}")
         try:
             chunks = pd.read_sql(
                 stmt,
