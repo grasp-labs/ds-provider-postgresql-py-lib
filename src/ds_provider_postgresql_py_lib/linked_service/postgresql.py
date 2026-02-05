@@ -29,7 +29,7 @@ class PostgreSQLLinkedServiceSettings(LinkedServiceSettings):
     The object containing the PostgreSQL linked service settings.
     """
 
-    uri: str = field(metadata={"secret": True})
+    uri: str = field(metadata={"mask": True})
     """
     PostgreSQL connection URI.
 
