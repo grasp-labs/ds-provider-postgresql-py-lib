@@ -41,8 +41,8 @@ def test_create_raises_when_connection_is_missing() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = PostgreSQLLinkedService(
         id=uuid.uuid4(),
-        name="test-name",
-        version="test-version",
+        name="test-linked-service",
+        version="1.0.0",
         settings=PostgreSQLLinkedServiceSettings(
             uri="postgresql://user:pass@localhost/db",
         ),
