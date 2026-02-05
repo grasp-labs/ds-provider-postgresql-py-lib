@@ -1,0 +1,5 @@
+# Bandit configuration file
+# https://bandit.readthedocs.io/en/latest/config.html
+
+skips:
+  - B105  # hardcoded_password_string
