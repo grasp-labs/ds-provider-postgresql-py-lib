@@ -10,6 +10,7 @@ to enable isolated unit testing without requiring actual database connections.
 
 from __future__ import annotations
 
+import uuid
 from typing import TYPE_CHECKING, Any, cast
 from unittest.mock import MagicMock
 
@@ -81,7 +82,12 @@ def create_mock_linked_service(uri: str = "postgresql://user:pass@localhost/db")
         PostgreSQLLinkedService: A linked service instance with mocked engine.
     """
     props = PostgreSQLLinkedServiceSettings(uri=uri)
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service._engine = cast("Engine", MockEngine())
     return linked_service
 
@@ -113,6 +119,9 @@ def create_mock_dataset(
         read=read_props,
     )
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )

@@ -29,7 +29,7 @@ class PostgreSQLLinkedServiceSettings(LinkedServiceSettings):
     The object containing the PostgreSQL linked service settings.
     """
 
-    uri: str
+    uri: str = field(metadata={"secret": True})
     """
     PostgreSQL connection URI.
 
@@ -71,7 +71,7 @@ class PostgreSQLLinkedService(
     """
 
     settings: PostgreSQLLinkedServiceSettingsType
-    _engine: Engine | None = field(default=None, init=False, repr=False)
+    _engine: Engine | None = field(default=None, init=False, repr=False, metadata={"serialize": False})
     """The SQLAlchemy engine instance with connection pool."""
 
     @property

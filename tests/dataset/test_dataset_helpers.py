@@ -14,6 +14,7 @@ Covers:
 
 from __future__ import annotations
 
+import uuid
 from typing import Any, cast
 from unittest.mock import MagicMock, patch
 
@@ -36,6 +37,9 @@ def test_set_schema_populates_schema_from_dataframe() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -57,6 +61,9 @@ def test_get_table_returns_table_with_correct_schema_and_name(mock_table: MagicM
     props = PostgreSQLDatasetSettings(table="test_table", schema="custom_schema")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -72,6 +79,9 @@ def test_pandas_dtype_to_sqlalchemy_integer_small() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -87,6 +97,9 @@ def test_pandas_dtype_to_sqlalchemy_integer_large() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -102,6 +115,9 @@ def test_pandas_dtype_to_sqlalchemy_float() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -117,6 +133,9 @@ def test_pandas_dtype_to_sqlalchemy_boolean() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -132,6 +151,9 @@ def test_pandas_dtype_to_sqlalchemy_datetime() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -147,6 +169,9 @@ def test_pandas_dtype_to_sqlalchemy_string() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -162,6 +187,9 @@ def test_pandas_dtype_to_sqlalchemy_unknown_defaults_to_string() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -177,6 +205,9 @@ def test_validate_column_raises_when_column_missing() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -197,6 +228,9 @@ def test_validate_column_passes_when_column_exists() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -214,6 +248,9 @@ def test_build_select_columns_returns_all_columns_when_none_specified() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -235,6 +272,9 @@ def test_build_select_columns_returns_specified_columns() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -257,6 +297,9 @@ def test_build_filters_returns_unchanged_stmt_when_no_filters() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -273,6 +316,9 @@ def test_build_filters_applies_filters_when_provided() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -294,6 +340,9 @@ def test_build_order_by_returns_unchanged_stmt_when_no_order_by() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -310,6 +359,9 @@ def test_build_order_by_applies_ascending_order() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -332,6 +384,9 @@ def test_build_order_by_applies_descending_order() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -354,6 +409,9 @@ def test_build_order_by_handles_mixed_order_specs() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )

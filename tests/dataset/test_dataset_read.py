@@ -13,6 +13,7 @@ Covers:
 
 from __future__ import annotations
 
+import uuid
 from typing import Any, cast
 from unittest.mock import MagicMock, patch
 
@@ -39,8 +40,16 @@ def test_read_raises_when_connection_is_missing() -> None:
     It raises ConnectionError when read is called without an initialized connection.
     """
     props = PostgreSQLDatasetSettings(table="test_table")
-    linked_service = PostgreSQLLinkedService(settings=PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db"))
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db"),
+    )
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -68,6 +77,9 @@ def test_read_reads_all_columns_when_none_specified(mock_table: MagicMock, mock_
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -100,6 +112,9 @@ def test_read_applies_column_selection(mock_table: MagicMock, mock_read_sql: Mag
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -130,6 +145,9 @@ def test_read_applies_filters(mock_table: MagicMock, mock_read_sql: MagicMock) -
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -159,6 +177,9 @@ def test_read_applies_order_by(mock_table: MagicMock, mock_read_sql: MagicMock) 
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -188,6 +209,9 @@ def test_read_applies_limit(mock_table: MagicMock, mock_read_sql: MagicMock) -> 
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -215,6 +239,9 @@ def test_read_sets_schema_from_content(mock_table: MagicMock, mock_read_sql: Mag
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -242,6 +269,9 @@ def test_read_wraps_exception_into_read_error(mock_table: MagicMock, mock_read_s
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )

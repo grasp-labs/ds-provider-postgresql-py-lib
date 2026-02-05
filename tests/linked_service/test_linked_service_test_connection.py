@@ -12,6 +12,7 @@ Covers:
 
 from __future__ import annotations
 
+import uuid
 from unittest.mock import MagicMock, patch
 
 from sqlalchemy import Engine
@@ -41,7 +42,12 @@ def test_test_connection_succeeds_when_connected(mock_create_engine: MagicMock) 
     mock_create_engine.return_value = mock_engine
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service.connect()
 
     success, message = linked_service.test_connection()
@@ -67,7 +73,12 @@ def test_test_connection_auto_connects_if_not_connected(mock_create_engine: Magi
     mock_create_engine.return_value = mock_engine
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
 
     success, message = linked_service.test_connection()
     assert success is True
@@ -90,7 +101,12 @@ def test_test_connection_fails_on_exception(mock_create_engine: MagicMock) -> No
     mock_create_engine.return_value = mock_engine
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service.connect()
 
     success, message = linked_service.test_connection()
@@ -106,7 +122,12 @@ def test_test_connection_returns_false_when_engine_creation_fails(mock_create_en
     mock_create_engine.return_value = None
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
 
     success, message = linked_service.test_connection()
     assert success is False
