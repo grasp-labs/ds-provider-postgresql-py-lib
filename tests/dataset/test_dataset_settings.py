@@ -12,6 +12,7 @@ Covers:
 
 from __future__ import annotations
 
+import uuid
 from typing import Any, cast
 from unittest.mock import MagicMock
 
@@ -32,6 +33,9 @@ def test_dataset_type_is_dataset() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -111,6 +115,9 @@ def test_close_closes_linked_service() -> None:
     # Add a close method mock to verify it's called
     linked_service.close = MagicMock()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -128,6 +135,9 @@ def test_close_can_be_called_multiple_times() -> None:
     linked_service = create_mock_linked_service()
     linked_service.close = MagicMock()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )

@@ -13,6 +13,7 @@ Covers:
 
 from __future__ import annotations
 
+import uuid
 from typing import Any, cast
 from unittest.mock import MagicMock, patch
 
@@ -38,8 +39,18 @@ def test_create_raises_when_connection_is_missing() -> None:
     It raises ConnectionError when called without an initialized connection.
     """
     props = PostgreSQLDatasetSettings(table="test_table")
-    linked_service = PostgreSQLLinkedService(settings=PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db"))
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-name",
+        version="test-version",
+        settings=PostgreSQLLinkedServiceSettings(
+            uri="postgresql://user:pass@localhost/db",
+        ),
+    )
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -55,6 +66,9 @@ def test_create_raises_when_input_is_empty() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -72,6 +86,9 @@ def test_create_raises_when_input_is_none() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -92,6 +109,9 @@ def test_create_writes_data_with_append_mode(mock_to_sql: MagicMock) -> None:
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -116,6 +136,9 @@ def test_create_writes_data_with_replace_mode(mock_to_sql: MagicMock) -> None:
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -137,6 +160,9 @@ def test_create_writes_data_with_fail_mode(mock_to_sql: MagicMock) -> None:
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -158,6 +184,9 @@ def test_create_uses_index_when_specified(mock_to_sql: MagicMock) -> None:
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -180,6 +209,9 @@ def test_create_uses_custom_schema(mock_to_sql: MagicMock) -> None:
     )
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -199,6 +231,9 @@ def test_create_wraps_exception_into_write_error(mock_to_sql: MagicMock) -> None
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )

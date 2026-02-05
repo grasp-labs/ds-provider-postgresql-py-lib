@@ -12,6 +12,7 @@ Covers:
 
 from __future__ import annotations
 
+import uuid
 from unittest.mock import MagicMock, patch
 
 from sqlalchemy import Engine
@@ -33,7 +34,12 @@ def test_connect_creates_engine_on_first_call(mock_create_engine: MagicMock) -> 
     mock_create_engine.return_value = mock_engine
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service.connect()
 
     assert linked_service.engine is not None
@@ -57,7 +63,12 @@ def test_connect_uses_correct_pool_parameters(mock_create_engine: MagicMock) -> 
         pool_timeout=60,
         pool_recycle=7200,
     )
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service.connect()
 
     mock_create_engine.assert_called_once_with(
@@ -79,7 +90,12 @@ def test_connect_is_idempotent(mock_create_engine: MagicMock) -> None:
     mock_create_engine.return_value = mock_engine
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service.connect()
     linked_service.connect()
     linked_service.connect()
@@ -99,7 +115,12 @@ def test_pool_returns_engine_pool_after_connect(mock_create_engine: MagicMock) -
     mock_create_engine.return_value = mock_engine
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service.connect()
 
     assert linked_service.pool is not None
@@ -116,7 +137,12 @@ def test_close_disposes_engine_when_connected(mock_create_engine: MagicMock) -> 
     mock_create_engine.return_value = mock_engine
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service.connect()
 
     assert linked_service.engine is not None
@@ -136,7 +162,12 @@ def test_close_is_idempotent(mock_create_engine: MagicMock) -> None:
     mock_create_engine.return_value = mock_engine
 
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     linked_service.connect()
     linked_service.close()
     linked_service.close()
@@ -151,7 +182,12 @@ def test_close_does_nothing_when_not_connected() -> None:
     It does nothing when close() is called without a connection.
     """
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
 
     assert linked_service.engine is None
     linked_service.close()

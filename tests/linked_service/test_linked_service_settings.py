@@ -12,6 +12,8 @@ Covers:
 
 from __future__ import annotations
 
+import uuid
+
 from ds_provider_postgresql_py_lib.enums import ResourceType
 from ds_provider_postgresql_py_lib.linked_service.postgresql import (
     PostgreSQLLinkedService,
@@ -24,7 +26,12 @@ def test_linked_service_type_is_linked_service() -> None:
     It exposes linked service type.
     """
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     assert linked_service.type == ResourceType.LINKED_SERVICE
 
 
@@ -33,7 +40,12 @@ def test_engine_is_none_before_connect() -> None:
     It returns None for engine property before connect() is called.
     """
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     assert linked_service.engine is None
 
 
@@ -42,7 +54,12 @@ def test_pool_is_none_before_connect() -> None:
     It returns None for pool property before connect() is called.
     """
     props = PostgreSQLLinkedServiceSettings(uri="postgresql://user:pass@localhost/db")
-    linked_service = PostgreSQLLinkedService(settings=props)
+    linked_service = PostgreSQLLinkedService(
+        id=uuid.uuid4(),
+        name="test-linked-service",
+        version="1.0.0",
+        settings=props,
+    )
     assert linked_service.pool is None
 
 

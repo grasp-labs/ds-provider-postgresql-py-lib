@@ -10,6 +10,7 @@ Covers:
 
 from __future__ import annotations
 
+import uuid
 from typing import Any, cast
 
 import pytest
@@ -28,6 +29,9 @@ def test_delete_raises_not_implemented_error() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -42,6 +46,9 @@ def test_update_raises_not_implemented_error() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
@@ -56,6 +63,9 @@ def test_rename_raises_not_implemented_error() -> None:
     props = PostgreSQLDatasetSettings(table="test_table")
     linked_service = create_mock_linked_service()
     dataset = PostgreSQLDataset(
+        id=uuid.uuid4(),
+        name="test-dataset",
+        version="1.0.0",
         linked_service=cast("Any", linked_service),
         settings=props,
     )
