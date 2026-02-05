@@ -245,6 +245,8 @@ class PostgreSQLDataset(
                 index=create_props.index,
                 dtype=cast("Any", self._pandas_dtype_to_sqlalchemy(self.input.dtypes)),
             )
+            self.output = self.input
+            self._set_schema(self.input)
         except Exception as exc:
             raise CreateError(
                 message=f"Failed to write data to table: {exc!s}",
